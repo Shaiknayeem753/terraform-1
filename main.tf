@@ -17,6 +17,7 @@ provider "aws" {
    vpc_id =  aws_vpc.Main.id
    cidr_block = "${var.public_subnets}"        # CIDR block of public subnets
    map_public_ip_on_launch = true
+   aws_availability_zone = "ap-south-1b"
  }
  #Create a Private Subnet                   # Creating Private Subnets
  resource "aws_subnet" "privatesubnets" {
@@ -62,11 +63,38 @@ provider "aws" {
 resource "aws_instance" "foo" {
   ami           = "${var.ami}" # us-west-2
   instance_type = "${var.instance_type}"
-  key_name = "ajaykeypair"
+  key_name = "${var.key_name}"
+  security_groups = aws_security_group.sg.id
 
   network_interface {
     network_interface_id = aws_network_interface.foo.id
     device_index         = 0
       }
   
+}
+
+resource "aws_security_group" "sg" {
+  name        = "all traffic"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "all traffic"
+  }
 }
