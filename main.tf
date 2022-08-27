@@ -60,7 +60,7 @@ provider "aws" {
   }
 }
 
-resource "aws_instance" "foo" {
+resource "aws_instance" "ec2" {
   ami           = "${var.ami}" # us-west-2
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
