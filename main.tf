@@ -63,7 +63,7 @@ provider "aws" {
 resource "aws_instance" "ec2" {
   ami           = "${var.ami}" # us-west-2
   instance_type = "${var.instance_type}"
-  key_name = "${var.key_name}"
+  key_name = "ajaykeypair"
 #  security_groups = aws_security_group.sg.id
 
   network_interface {
