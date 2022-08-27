@@ -65,10 +65,8 @@ resource "aws_instance" "foo" {
   network_interface {
     network_interface_id = aws_network_interface.foo.id
     device_index         = 0
-
-  }
-  network_interfaces {
     associate_public_ip_address = true
-  }
 
+  }
+  
 }
