@@ -60,20 +60,6 @@ provider "aws" {
   }
 }
 
-resource "aws_instance" "ec2" {
-  ami           = "${var.ami}" # us-west-2
-  instance_type = "${var.instance_type}"
-  key_name = "${var.key_name}"
-  security_groups = aws_security_group.sg.id
-
-  network_interface {
-    network_interface_id = aws_network_interface.foo.id
-    device_index         = 0
-      }
-  
-}
-
-
 resource "aws_security_group" "sg" {
   name        = "alltraffic"
   description = "Allow TLS inbound traffic"
@@ -99,3 +85,18 @@ resource "aws_security_group" "sg" {
     Name = "all traffic"
   }
 }
+
+resource "aws_instance" "foo" {
+  ami           = "${var.ami}" # us-west-2
+  instance_type = "${var.instance_type}"
+  key_name = "${var.key_name}"
+  
+  network_interface {
+    network_interface_id = aws_network_interface.foo.id
+    device_index         = 0
+    security_group_id = aws_security_group.sg.id
+      }
+  
+}
+
+
