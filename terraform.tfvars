@@ -1,3 +1,6 @@
 main_vpc_cidr = "20.0.0.0/16"
 public_subnets = "20.0.0.0/28"
 private_subnets = "20.0.0.64/28"
+ami = "ami-06640050dc3f556bb"
+instance_type = "t2.micro"
+private_ips = "20.0.0.10"

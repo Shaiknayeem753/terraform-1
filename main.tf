@@ -49,3 +49,26 @@ provider "aws" {
     route_table_id = aws_route_table.PrivateRT.id
  }
  
+ resource "aws_network_interface" "foo" {
+  subnet_id   = aws_subnet.publicsubnets.id
+  private_ips = ["${var.private_ips}"]
+
+  tags = {
+    Name = "primary_network_interface"
+  }
+}
+
+resource "aws_instance" "foo" {
+  ami           = "${var.ami}" # us-west-2
+  instance_type = "${var.instance_type}"
+
+  network_interface {
+    network_interface_id = aws_network_interface.foo.id
+    device_index         = 0
+
+  }
+  network_interfaces {
+    associate_public_ip_address = true
+  }
+
+}
